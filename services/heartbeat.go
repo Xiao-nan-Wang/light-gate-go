@@ -5,8 +5,8 @@ import (
 )
 
 var mutex sync.Mutex
-var services map[string][]string
-var temporaryHeartbeatStorage []Heartbeat
+var services = make(map[string][]string)
+var temporaryHeartbeatStorage = make([]Heartbeat, 100)
 
 type Heartbeat struct {
 	Name string
@@ -26,6 +26,7 @@ func Store(heartbeat Heartbeat) {
 
 func ReloadServices() {
 	for _, heartbeat := range temporaryHeartbeatStorage {
+		clear(temporaryHeartbeatStorage)
 		addresses, ok := services[heartbeat.Name]
 		if ok {
 			addresses = append(addresses, heartbeat.Ip+":"+heartbeat.Port)

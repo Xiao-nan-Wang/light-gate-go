@@ -2,8 +2,8 @@ package main
 
 import (
 	"LightGate/services"
-	"fmt"
 	"github.com/gin-gonic/gin"
+	"github.com/robfig/cron"
 	"net/http"
 )
 
@@ -26,8 +26,17 @@ func main() {
 		c.Status(http.StatusOK)
 	})
 
-	err := r.Run()
+	serviceCron := cron.New()
+	err := serviceCron.AddFunc("*/10 * * * * ?", func() {
+		services.ReloadServices()
+	})
 	if err != nil {
-		fmt.Println(err)
+		return
+	}
+	serviceCron.Start()
+
+	err = r.Run()
+	if err != nil {
+		return
 	}
 }
