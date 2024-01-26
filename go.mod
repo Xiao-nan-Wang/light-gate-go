@@ -1,4 +1,4 @@
-module codecv.xyz/go/LightGate
+module LightGate
 
 go 1.22rc2
 
