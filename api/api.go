@@ -1,6 +1,7 @@
 package api
 
 import (
+	"LightGate/midware"
 	"LightGate/services"
 	"LightGate/util"
 	"github.com/gin-gonic/gin"
@@ -9,6 +10,7 @@ import (
 
 func Router() *gin.Engine {
 	r := gin.Default()
+	r.Use(midware.Cors())
 
 	r.GET("/alive-services", func(c *gin.Context) {
 		res := services.GetServices()
