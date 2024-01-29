@@ -2,6 +2,7 @@ package api
 
 import (
 	"LightGate/services"
+	"LightGate/util"
 	"github.com/gin-gonic/gin"
 	"net/http"
 )
@@ -20,7 +21,7 @@ func Router() *gin.Engine {
 		if err != nil {
 			c.JSON(http.StatusInternalServerError, err)
 		}
-		heartbeat.Ip = c.ClientIP()
+		heartbeat.Ip = util.ParseIp(c.Request)
 		services.Store(heartbeat)
 		c.Status(http.StatusOK)
 	})

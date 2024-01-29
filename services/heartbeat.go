@@ -6,7 +6,7 @@ import (
 
 var mutex sync.Mutex
 var services = make(map[string][]string)
-var temporaryHeartbeatStorage = make([]Heartbeat, 100)
+var temporaryHeartbeatStorage = make([]Heartbeat, 0)
 var i = 0
 
 type Heartbeat struct {
@@ -32,8 +32,8 @@ func Store(heartbeat Heartbeat) {
 }
 
 func ReloadServices() {
+	clear(services)
 	for _, heartbeat := range temporaryHeartbeatStorage {
-		clear(temporaryHeartbeatStorage)
 		addresses, ok := services[heartbeat.Name]
 		if ok {
 			addresses = append(addresses, heartbeat.Ip+":"+heartbeat.Port)
@@ -42,4 +42,5 @@ func ReloadServices() {
 			services[heartbeat.Name] = addresses
 		}
 	}
+	temporaryHeartbeatStorage = nil
 }

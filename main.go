@@ -22,7 +22,7 @@ func main() {
 	serviceCron.Start()
 
 	r := api.Router()
-	err = r.Run(*port)
+	err = r.Run()
 	if err != nil {
 		return
 	}

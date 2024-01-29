@@ -22,7 +22,7 @@
 @Component
 public class HeartBeat {
     @Value("${server.port}")
-    public Integer port;
+    public String port;
     @Value("${lightgate.serviceName}")
     public String serviceName;
     @Value("${lightgate.url}")
@@ -41,7 +41,7 @@ public class HeartBeat {
     @Data
     private static class HeartBeatDto {
         String name;
-        Integer port;
+        String port;
     }
 }
 ```
