@@ -16,8 +16,6 @@ func Router() *gin.Engine {
 
 	r.GET("/home", func(c *gin.Context) {
 		service := services.GetServices()
-		service["test"] = []string{"192.68.71.133:8080", "192.68.71.134:8080"}
-		service["default"] = []string{"127.0.0.1:80"}
 		c.Header("Content-Type", "text/html; charset=utf-8")
 		c.String(200, template.GetHome(service))
 	})

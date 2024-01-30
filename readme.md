@@ -52,7 +52,7 @@ lightgate.serviceName=default
 lightgate.url=127.0.0.1:8080
 ```
 B.其他框架(待补充)
-## SSL支持
+## 4.SSL支持
 在light-gate程序所在位置创建conf文件夹,下载crt和key格式证书放入conf文件夹并改名server.
 
 light-gate在启动时会检测是否存在ssl证书信息,存在则开启https模式,否则开启http模式.
@@ -67,6 +67,9 @@ light-gate在启动时会检测是否存在ssl证书信息,存在则开启https�
         server.crt
         server.key
 ```
+## 5.查看服务运行情况
+访问http(s)://ip:port/home路径,可以看到如下界面:
+![image](home.png)
 # 项目说明
 ## 1.概述
 是一个用gin框架构建的负载均衡器，服务通过向负载均衡器发送心跳来注册自己，负载均衡器会在活跃服务里选择一个处理请求.它运行只需要6MB内存!
