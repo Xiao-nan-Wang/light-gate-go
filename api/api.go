@@ -12,7 +12,6 @@ import (
 func Router() *gin.Engine {
 	r := gin.Default()
 	r.Use(midware.Cors())
-	r.LoadHTMLGlob("template/*")
 
 	r.GET("/home", func(c *gin.Context) {
 		service := services.GetServices()
