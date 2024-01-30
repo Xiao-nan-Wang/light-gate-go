@@ -35,7 +35,7 @@ public class HeartBeat {
         HeartBeatDto dto = new HeartBeatDto();
         dto.setPort(port);
         dto.setName(serviceName);
-        String fullPath = "http://" + url + "/heartBeat";
+        String fullPath = "http://" + url + "/heartbeat";
         restTemplate.postForObject(fullPath, dto, String.class);
     }
     @Data
