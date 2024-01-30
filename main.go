@@ -5,6 +5,7 @@ import (
 	"LightGate/services"
 	"flag"
 	"github.com/robfig/cron"
+	"log"
 )
 
 var port = flag.String("port", "8080", "运行端口")
@@ -22,8 +23,12 @@ func main() {
 	serviceCron.Start()
 
 	r := api.Router()
-	err = r.Run()
+	err = r.RunTLS(":"+*port, "conf/server.crt", "conf/server.key")
 	if err != nil {
-		return
+		log.Println("SSL配置失败，启动HTTP")
+		err = r.Run(":" + *port)
+		if err != nil {
+			return
+		}
 	}
 }
