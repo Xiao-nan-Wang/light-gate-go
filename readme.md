@@ -19,37 +19,40 @@
 #### A.springboot框架
 新建HeartBeat.java文件
 ```
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.web.client.RestTemplateBuilder;
+import org.springframework.scheduling.annotation.Scheduled;
+import org.springframework.stereotype.Component;
+import org.springframework.web.client.RestTemplate;
+
 @Component
 public class HeartBeat {
     @Value("${server.port}")
     public String port;
-    @Value("${lightgate.serviceName}")
-    public String serviceName;
-    @Value("${lightgate.url}")
-    public String url;
-    @Autowired
+    private String serviceName = "default";
+    public String url = "localhost:8080";
     private RestTemplate restTemplate;
+    @Autowired
+    public void setRestTemplate(RestTemplateBuilder builder) {
+        this.restTemplate = builder.build();
+    }
 
     @Scheduled(fixedRate = 5000)
-    public void sendHeartBeat(){
+    public void sendHeartBeat() {
         HeartBeatDto dto = new HeartBeatDto();
         dto.setPort(port);
         dto.setName(serviceName);
         String fullPath = "http://" + url + "/heartbeat";
         restTemplate.postForObject(fullPath, dto, String.class);
     }
+
     @Data
     private static class HeartBeatDto {
         String name;
         String port;
     }
 }
-```
-并且在application.properties里加入
-```
-server.port=8080
-lightgate.serviceName=default
-lightgate.url=127.0.0.1:8080
 ```
 B.其他框架(待补充)
 ## 4.SSL支持
