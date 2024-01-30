@@ -1,6 +1,7 @@
 package services
 
 import (
+	"slices"
 	"sync"
 )
 
@@ -35,12 +36,12 @@ func ReloadServices() {
 	clear(services)
 	for _, heartbeat := range temporaryHeartbeatStorage {
 		addresses, ok := services[heartbeat.Name]
-		if ok {
+		if ok && !slices.Contains(addresses, heartbeat.Ip+":"+heartbeat.Port) {
 			addresses = append(addresses, heartbeat.Ip+":"+heartbeat.Port)
 		} else {
 			addresses = []string{heartbeat.Ip + ":" + heartbeat.Port}
-			services[heartbeat.Name] = addresses
 		}
+		services[heartbeat.Name] = addresses
 	}
 	temporaryHeartbeatStorage = nil
 }
