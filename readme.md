@@ -54,7 +54,54 @@ public class HeartBeat {
     }
 }
 ```
-B.其他框架(待补充)
+B.gin框架
+需要把Run函数放到main函数里触发一下
+参数说明
+
+| 参数  | 说明                          |
+|-----|-----------------------------|
+| lightGateUrl | lightGate运行的地址,格式形如 ip:port |
+| port | 当前微服务监听的端口                  |
+| serviceName | 当前微服务的名称                    |
+| ssl | lightGate是否开启了https         |
+```
+var lightGateUrl = "ip:8080"
+var port = "8081"
+var serviceName = "file"
+var ssl = true
+
+func Run() {
+	serviceCron := cron.New()
+	err := serviceCron.AddFunc("*/6 * * * * ?", func() {
+		send()
+	})
+	if err != nil {
+		return
+	}
+	serviceCron.Start()
+}
+
+func send() {
+	client := &http.Client{}
+
+	data := "{\"name\": \"" + serviceName + "\",\"port\": \"" + port + "\"}"
+	body := bytes.NewBuffer([]byte(data))
+	var url string
+	if ssl {
+		url = "https://" + lightGateUrl + "/heartbeat"
+	} else {
+		url = "http://" + lightGateUrl + "/heartbeat"
+	}
+	myRequest, err := http.NewRequest("POST", url, body)
+	if err != nil {
+		return
+	}
+	respose, err := client.Do(myRequest)
+	if err != nil {
+		fmt.Println(respose)
+	}
+}
+```
 ## 4.SSL支持
 在light-gate程序所在位置创建conf文件夹,下载crt和key格式证书放入conf文件夹并改名server.
 
