@@ -24,4 +24,12 @@ func DoProxy(w http.ResponseWriter, r *http.Request) {
 	if err != nil {
 		log.Printf("在复制响应内容时出错: %v", err)
 	}
+	err = myRequest.Body.Close()
+	if err != nil {
+		return
+	}
+	err = myResponse.Body.Close()
+	if err != nil {
+		return
+	}
 }
